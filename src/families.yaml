@@ -1,0 +1,12 @@
+platform:
+  oidc:
+    read_write:
+      group_id: "9bac8adf-ce48-44c9-8459-3320090e9a44"
+      name: "platform-admins-nprod"
+      type: "external"
+cygnus:
+  oidc:
+    read_only:
+      group_id: "1e1f5f98-8bf2-44e0-bb77-cc3119473c12"
+      name: "cygnus-read-only-nprod"
+      type: "external"
