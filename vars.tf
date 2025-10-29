@@ -1,3 +1,4 @@
+# define local variables
 locals {
   families      = yamldecode(file("${path.module}/src/families.yaml"))
   families_keys = keys(local.families)
@@ -10,5 +11,54 @@ locals {
     }
   ]...)
 
-  client_secret_name = "platform/token_client-secret"
+  # Path to secret to load
+  client_secret_name = "applications/cloud-vault-client"
+}
+
+# Provided variables from env or command line : TF_VAR_xxxx
+variable "VAULT_ADDR" {
+  description = "HashiCorp Vault Host URL"
+  default     = "http://127.0.0.1:8200"
+  type        = string
+  sensitive   = false
+}
+
+variable "VAULT_APPROLE_PATH" {
+  description = "HashiCorp Vault Approle mount point"
+  default     = "approle" 
+  type        = string
+  sensitive   = false
+}
+
+variable "VAULT_SECRET_PATH" {
+  description = "HashiCorp Vault Approle Role Id"
+  default     = "applications/cloud-vault-client"
+  type        = string
+  sensitive   = false
+}
+
+# variable "VAULT_APPROLE_ROLE_NAME" {
+#   description = "HashiCorp Vault Approle role name"
+#   default     = "spring-cloud-vault-client" 
+#   type        = string
+#   sensitive   = false
+# }
+
+# variable "VAULT_APPROLE_ROLE_POLICY" {
+#   description = "HashiCorp Vault Approle role policy"
+#   default     = "secret_cloud-vault-client" 
+#   type        = string
+#   sensitive   = false
+# }
+
+variable "VAULT_ROLE_ID" {
+  description = "HashiCorp Vault Approle Role Id"
+  type        = string
+  sensitive   = false
+}
+
+variable "VAULT_SECRET_ID" {
+  description = "HashiCorp Vault Approle Secret ID"
+  type        = string
+  sensitive   = true
 }
