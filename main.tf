@@ -1,29 +1,44 @@
 # Authentication backend and credentials to login
 
 # Mount (without storing to state file (ie ephemeral) the specified mount/name)
-ephemeral "vault_kv_secret_v2" "token_client_secret" {
-  mount = "kv"
-  name  = local.client_secret_name
+data "vault_kv_secret_v2" "aws_secrets" {
+  #for_each = local.vault_secret_paths_set
+  mount = var.VAULT_KV_V2_MOUNT
+  #name  = "applications"
+  
+  name  = var.VAULT_KV_V2_SECRETS_PATH  
+  #for_each = local.vault_secret_paths_set
+  
 }
 
-# Enable Approle Authentication
-# resource "vault_auth_backend" "approle" {
-#   type = "approle"
-#   path = "approle"
+resource "null_resource" "print_keys" {
+  # The for_each loop iterates over the local.secret_keys list.
+  # We convert it to a set first using toset()
+  for_each = toset(keys(data.vault_kv_secret_v2.aws_secrets))
+
+  # Use the local-exec provisioner to run a command
+  provisioner "local-exec" {
+    # The 'command' can be a shell command
+    # each.value refers to the current key in the iteration
+    command = "echo \"Visiting key: ${each.value}\""
+  }
+
+  # Add triggers to force re-execution if the secret data changes
+  #triggers = {
+    # Hashing the entire data map ensures the null_resource is re-created
+    # if any key or value in the secret changes
+    #data_hash = data.vault_kv_secret_v2.aws_secrets.data
+  #}
+}
+
+
+
+# data "vault_aws_access_credentials" "aws_creds" {
+#   backend  = "aws_dynamic_secrets" # Or the path where your AWS secrets engine is mounted
+#   role     = "AWS_SECRETS_SYNC_ROLE" # The name of the role configured in Vault
+# #  role_arn = "arn:aws:iam::386827457018:role/AWS_SECRETS_SYNC_ROLE"
 # }
 
-# Create an approle role
-# resource "vault_approle_auth_backend_role" "default_approle" {
-#   backend         = vault_auth_backend.approle.path
-#   role_name       = "${var.VAULT_APPROLE_ROLE_NAME}"
-#   token_policies  = ["default", "${var.VAULT_APPROLE_ROLE_POLICY}"]
-# }
-
-# Create an approle role policy
-# resource "vault_policy" "default_approle_policy" {
-#   name = "${var.VAULT_APPROLE_ROLE_POLICY}"
-#   policy = file("${path.module}/src/${var.VAULT_APPROLE_ROLE_POLICY}.hclclear")
-# }
 
 # Generate oidc policies based on corresponding family file
 resource "vault_policy" "family_oidc_policy" {
