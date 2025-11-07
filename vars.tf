@@ -45,9 +45,16 @@ variable "VAULT_KV_V2_MOUNT" {
   sensitive   = false
 }
 
-variable "VAULT_KV_V2_SECRETS_PATH" {
+variable "VAULT_SECRETS_PATH" {
   description = "HashiCorp Vault KV V2 Secrets Path"
   default     = "applications/cloud-vault-client"
+  type        = string
+  sensitive   = false
+}
+
+variable "VAULT_FILTERED_SECRET" {
+  description = "HashiCorp Vault Path tp specific secret to sync" 
+  default     = null
   type        = string
   sensitive   = false
 }
@@ -97,14 +104,14 @@ variable "VAULT_SECRET_ID" {
   sensitive   = true
 }
 
-variable "AWS_ACCESS_KEY" {
-  description = "AWS Access key"
-  type        = string
-  sensitive   = false
-}
+# variable "AWS_ACCESS_KEY" {
+#   description = "AWS Access key"
+#   type        = string
+#   sensitive   = false
+# }
 
-variable "AWS_SECRET_KEY" {
-  description = "AWS Secret key"
-  type        = string
-  sensitive   = true
-}
+# variable "AWS_SECRET_KEY" {
+#   description = "AWS Secret key"
+#   type        = string
+#   sensitive   = true
+# }
