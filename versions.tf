@@ -26,11 +26,11 @@ provider "vault" {
   }
 }
 
-# provider "aws" {
-#   region     = var.AWS_DEFAULT_REGION # Or your desired AWS region
-#   access_key = var.AWS_ACCESS_KEY
-#   secret_key = var.AWS_SECRET_KEY
-# }
+provider "aws" {
+  region     = var.AWS_DEFAULT_REGION # Or your desired AWS region
+  access_key = var.AWS_ACCESS_KEY
+  secret_key = var.AWS_SECRET_KEY
+}
 
 # provider "aws" {
 #   region     = "${var.AWS_DEFAULT_REGION}"

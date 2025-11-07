@@ -10,6 +10,27 @@ ephemeral "vault_kv_secret_v2" "aws_secrets" {
   
 }
 
+# resource "aws_secretsmanager_secret" "aws_secrets" {
+#   for_each = ephemeral.vault_kv_secret_v2.aws_secrets.data
+
+#   # each.key will be the secret name, each.value will be the secret content
+#   name = each.key
+
+#   # Description / Metadata
+# }
+
+# resource "aws_secretsmanager_secret_version" "aws_secrets" {
+#   for_each = aws_secretsmanager_secret.aws_secrets
+
+#   secret_id = each.value.id
+
+#   # Use the original secret data value
+#   # The write-ony argument secret_string_wo is used to avoid storing the value in the state file
+#   secret_string_wo = ephemeral.vault_kv_secret_v2.aws_secrets.data[each.key]
+
+#   secret_string_wo_version = 1  // Hard coded version  
+# }
+
 # resource "null_resource" "print_keys" {
 #   # The for_each loop iterates over the local.secret_keys list.
 #   # We convert it to a set first using toset()
