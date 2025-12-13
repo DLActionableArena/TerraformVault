@@ -1,71 +1,57 @@
-# Authentication backend and credentials to login
-
-# Mount (without storing to state file (ie ephemeral) the specified mount/name)
-ephemeral "vault_kv_secret_v2" "aws_secrets" {
-  #for_each = local.vault_secret_paths_set
-  mount = var.VAULT_KV_V2_MOUNT  
-  name  = coelesce(var.VAULT_FILTERED_SECRET, var.VAULT_SECRETS_PATH)
-  #for_each = local.vault_secret_paths_set
-  #version = ....  # Targetted filtered version of the secret
+# ephemeral "vault_kv_secret_v2" "vault_secrets" {
+#   for_each = local.SECRET_NAMES_SET
   
-}
+#   mount = "kv"
+#   name = "aws_secrets/${each.value}"
+#   # name = "applications/cloud-vault-client"
+#   # name  = coalesce(var.VAULT_FILTERED_SECRET, var.VAULT_SECRETS_PATH)
+# }
 
+# # data "vault_kv_secret_v2" "vault_versions" {
+# #   for_each = local.SECRET_NAMES_SET
+  
+# #   mount = "kv"
+# #   name = "applications/${each.value}"
+# #   # name = "applications/cloud-vault-client"
+# #   # name  = coalesce(var.VAULT_FILTERED_SECRET, var.VAULT_SECRETS_PATH)
+# # }
+
+
+# # Provides a resource to manage AWS Secrets Manager secret metadata
 # resource "aws_secretsmanager_secret" "aws_secrets" {
-#   for_each = ephemeral.vault_kv_secret_v2.aws_secrets.data
+#   # Working as long as version changes
+#   for_each = local.SECRET_NAMES_SET
 
 #   # each.key will be the secret name, each.value will be the secret content
 #   name = each.key
-
-#   # Description / Metadata
 # }
 
 # resource "aws_secretsmanager_secret_version" "aws_secrets" {
-#   for_each = aws_secretsmanager_secret.aws_secrets
+#   for_each = local.SECRET_NAMES_SET
+#   # for_each = aws_secretsmanager_secret.aws_secrets
 
-#   secret_id = each.value.id
+#   secret_id = aws_secretsmanager_secret.aws_secrets[each.key].id
 
 #   # Use the original secret data value
 #   # The write-ony argument secret_string_wo is used to avoid storing the value in the state file
-#   secret_string_wo = ephemeral.vault_kv_secret_v2.aws_secrets.data[each.key]
-
-#   secret_string_wo_version = 1  // Hard coded version  
+#   secret_string_wo = jsonencode(ephemeral.vault_kv_secret_v2.vault_secrets[each.key].data)
+#   # secret_string_wo_version = ephemeraal.vault_kv_secret_v2.vault_versions[each.key].version
+#   secret_string_wo_version = var.VAULT_SECRETS_VERSION[each.key]
 # }
 
-# resource "null_resource" "print_keys" {
-#   # The for_each loop iterates over the local.secret_keys list.
-#   # We convert it to a set first using toset()
-#   for_each = toset(keys(data.vault_kv_secret_v2.aws_secrets))
+#==========================================================================================================
 
-#   # Use the local-exec provisioner to run a command
-#   provisioner "local-exec" {
-#     # The 'command' can be a shell command
-#     # each.value refers to the current key in the iteration
-#     command = "echo \"Visiting key: ${each.value}\""
-#   }
-
-#   # Add triggers to force re-execution if the secret data changes
-#   #triggers = {
-#     # Hashing the entire data map ensures the null_resource is re-created
-#     # if any key or value in the secret changes
-#     #data_hash = data.vault_kv_secret_v2.aws_secrets.data
-#   #}
-# }
-
-data "vault_aws_access_credentials" "aws_creds" {
-  backend  = "aws_dynamic_secrets"   # Or the path where your AWS secrets engine is mounted
-  role     = "AWS_SECRETS_SYNC_ROLE" # The name of the role configured in Vault
-#  role_arn = "arn:aws:iam::386827457018:role/AWS_SECRETS_SYNC_ROLE"
+resource "aws_secretsmanager_secret_version" "imported_versions" {
+  for_each   = local.secret_versions_map
+  secret_id  = each.value.secret_id
+  version_id = each.value.version_id  # Optional; import handles it
 }
 
-# Generate oidc policies based on corresponding family file
-resource "vault_policy" "family_oidc_policy" {
-  for_each = {
-    for key, oidc_config in local.family_oidc_connections : key => oidc_config
+import {
+  for_each = local.secret_versions_map
+  to = aws_secretsmanager_secret_version.imported_versions[each.key]
+  identity = {
+    secret_id  = aws_secretsmanager_secret_version.imported_versions[each.key]
+    version_id = each.value.id
   }
-
-  name = each.key
-  policy = templatefile("${path.module}/src/oidc_${each.value.oidc_name}.hcl.tpl", {
-    family    = each.value.family
-    oidc_name = each.value.oidc_name
-  })
 }
