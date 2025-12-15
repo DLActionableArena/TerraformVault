@@ -41,17 +41,17 @@
 
 #==========================================================================================================
 
-resource "aws_secretsmanager_secret_version" "imported_versions" {
-  for_each   = local.secret_versions_map
-  secret_id  = each.value.secret_id
-  version_id = each.value.version_id  # Optional; import handles it
-}
+# resource "aws_secretsmanager_secret_version" "imported_versions" {
+#   for_each   = local.secret_versions_map
+#   secret_id  = each.value.secret_id
+#   #version_id = each.value.version_id  # Optional; import handles it
+# }
 
-import {
-  for_each = local.secret_versions_map
-  to = aws_secretsmanager_secret_version.imported_versions[each.key]
-  identity = {
-    secret_id  = aws_secretsmanager_secret_version.imported_versions[each.key]
-    version_id = each.value.id
-  }
-}
+# import {
+#   for_each = local.secret_versions_map
+#   to = aws_secretsmanager_secret_version.imported_versions[each.key]
+#   identity = {
+#     secret_id  = aws_secretsmanager_secret_version.imported_versions[each.key]
+#     version_id = each.value.id
+#   }
+# }
