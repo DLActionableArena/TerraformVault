@@ -29,3 +29,20 @@ resource "aws_secretsmanager_secret_version" "aws_secrets" {
   secret_string_wo_version = var.VAULT_SECRETS_VERSION[each.key]
 }
 
+resource "null_resource" "log_secrets" {
+  for_each = aws_secretsmanager_secret.aws_secrets  # Matches for_each keys
+  
+  triggers = {
+    secret_id = aws_secretsmanager_secret.aws_secrets[each.key].id
+    secret_name = each.value.name  # Optional: log name too
+  }
+  
+  provisioner "local-exec" {
+    command = <<-EOT
+      echo "WHAT Secret '${each.key}' ID: ${aws_secretsmanager_secret.aws_secrets[each.key].id}"
+      echo "WHAT Secret '${each.key}' ARN: ${self.triggers.secret_id}"
+    EOT
+  }
+  
+  depends_on = [aws_secretsmanager_secret.aws_secrets]
+}
