@@ -13,23 +13,28 @@ locals {
 
   # Generate a set of Secrets paths from VAULT_TO_AWS_SECRETS variable
   SECRET_NAMES_SET = toset(split("," , coalesce(var.VAULT_FILTERED_SECRET, var.SECRET_NAMES)))
+
+  secret_versions = {
+    for secret in local.SECRET_NAMES_SET: 
+      secret => tonumber(
+        jsondecode(data.http.kv_metadata[secret].response_body).data.current_version
+      )
+  }
 }
 
+# Value will be updated by an *.auto.tfvar 
+variable "imported_secret_names" {
+  description = "Set of imported secret names"
+  type = set(string)
+  default = [] 
+}
 
 variable "SECRET_NAMES" {
   description = "Comma separated list of HashiCorp Vault secrets paths"
   type        = string
-  # default     = "application1,application2,application3"
-  default     = "application4"
+  default     = "LocalSecret8"
 }
 # ,deleteapplication1,deleteapplication2,deletesecret3
-
-
-variable "SECRET_ARNS" {
-  description = "Comma separated list of HashiCorp Vault secrets paths"
-  type        = string
-  default     = "arn:aws:secretsmanager:us-east-2:386827457018:secret:application3-2TCryq,arn:aws:secretsmanager:us-east-2:386827457018:secret:application1-uycBtf,arn:aws:secretsmanager:us-east-2:386827457018:secret:application2-BTq8co"
-}
 
 variable "VAULT_FILTERED_SECRET" {
   description = "HashiCorp Vault Path tp specific secret to sync" 
@@ -47,7 +52,8 @@ variable "VAULT_KV_V2_MOUNT" {
 
 variable "VAULT_SECRETS_PATH" {
   description = "HashiCorp Vault KV V2 Secrets Path"
-  default     = "applications/cloud-vault-client"
+  default     = "aws_secrets"
+#  default     = "applications/cloud-vault-client"
 #  default     = "applications/"
   type        = string
   sensitive   = false
@@ -90,20 +96,24 @@ variable "AWS_DEFAULT_REGION" {
   sensitive   = false
 }
 
-variable "VAULT_SECRETS_VERSION" {
-  description = "A map of Vault secrets versions"
-  type        = map(string)
-  default = {
-    application1 = 4
-    application2 = 4
-    application3 = 4
-    application4 = 1
-    deleteapplication1 = 1
-    deleteapplication2 = 1
-    deletesecret3 = 1
-    ForDeletion = 1
-  }
-}
+# variable "VAULT_SECRETS_VERSION" {
+#   description = "A map of Vault secrets versions"
+#   type        = map(string)
+#   default = {
+#     LocalSecret = 1
+#     LocalSecret7 = 1
+#     LocalSecret8 = 1
+#     application1 = 4
+#     application2 = 4
+#     application3 = 4
+#     application4 = 2
+#     application5 = 1
+#     deleteapplication1 = 1
+#     deleteapplication2 = 1
+#     deletesecret3 = 1
+#     ForDeletion = 1
+#   }
+# }
 
 variable "VAULT_ROLE_ID" {
   description = "HashiCorp Vault Approle Role Id"
@@ -127,10 +137,4 @@ variable "AWS_SECRET_KEY" {
   description = "AWS Secret key"
   type        = string
   sensitive   = true
-}
-
-variable "enable_import" {
-  type        = bool
-  description = "A boolean flag for enabling the import feature"
-  default     = true
 }

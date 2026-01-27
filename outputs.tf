@@ -20,3 +20,7 @@
 #     }
 #     ephemeral = true
 # }
+
+output "secret_versions" {
+  value = local.secret_versions 
+}
