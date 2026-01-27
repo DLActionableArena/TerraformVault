@@ -1,0 +1,295 @@
+{
+  "version": 4,
+  "terraform_version": "1.13.4",
+  "serial": 11,
+  "lineage": "32f70649-6456-e16e-2cb7-a5798cec041f",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret_version",
+      "name": "application1",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application1-uycBtf",
+            "has_secret_string_wo": true,
+            "id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application1-uycBtf|terraform-20251218170339263100000003",
+            "region": "us-east-2",
+            "secret_binary": "",
+            "secret_id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application1-uycBtf",
+            "secret_string": "",
+            "secret_string_wo": null,
+            "secret_string_wo_version": 4,
+            "version_id": "terraform-20251218170339263100000003",
+            "version_stages": [
+              "AWSCURRENT"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_binary"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string_wo"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "identity": {
+            "account_id": "386827457018",
+            "region": "us-east-2",
+            "secret_id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application1-uycBtf",
+            "version_id": "terraform-20251218170339263100000003"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "ephemeral.vault_kv_secret_v2.application1"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret_version",
+      "name": "application2",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application2-BTq8co",
+            "has_secret_string_wo": true,
+            "id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application2-BTq8co|terraform-20251218170339261800000001",
+            "region": "us-east-2",
+            "secret_binary": "",
+            "secret_id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application2-BTq8co",
+            "secret_string": "",
+            "secret_string_wo": null,
+            "secret_string_wo_version": 4,
+            "version_id": "terraform-20251218170339261800000001",
+            "version_stages": [
+              "AWSCURRENT"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_binary"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string_wo"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "identity": {
+            "account_id": "386827457018",
+            "region": "us-east-2",
+            "secret_id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application2-BTq8co",
+            "version_id": "terraform-20251218170339261800000001"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "ephemeral.vault_kv_secret_v2.application2"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret_version",
+      "name": "application3",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application3-2TCryq",
+            "has_secret_string_wo": true,
+            "id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application3-2TCryq|terraform-20251218170339264400000005",
+            "region": "us-east-2",
+            "secret_binary": "",
+            "secret_id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application3-2TCryq",
+            "secret_string": "",
+            "secret_string_wo": null,
+            "secret_string_wo_version": 4,
+            "version_id": "terraform-20251218170339264400000005",
+            "version_stages": [
+              "AWSCURRENT"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_binary"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string_wo"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "identity": {
+            "account_id": "386827457018",
+            "region": "us-east-2",
+            "secret_id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application3-2TCryq",
+            "version_id": "terraform-20251218170339264400000005"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "ephemeral.vault_kv_secret_v2.application3"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret_version",
+      "name": "application4",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application4-6KHkhi",
+            "has_secret_string_wo": true,
+            "id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application4-6KHkhi|terraform-20251218170339262500000002",
+            "region": "us-east-2",
+            "secret_binary": "",
+            "secret_id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application4-6KHkhi",
+            "secret_string": "",
+            "secret_string_wo": null,
+            "secret_string_wo_version": 2,
+            "version_id": "terraform-20251218170339262500000002",
+            "version_stages": [
+              "AWSCURRENT"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_binary"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string_wo"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "identity": {
+            "account_id": "386827457018",
+            "region": "us-east-2",
+            "secret_id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application4-6KHkhi",
+            "version_id": "terraform-20251218170339262500000002"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "ephemeral.vault_kv_secret_v2.application4"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret_version",
+      "name": "application5",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application5-WeYtMp",
+            "has_secret_string_wo": true,
+            "id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application5-WeYtMp|terraform-20251218170339263700000004",
+            "region": "us-east-2",
+            "secret_binary": "",
+            "secret_id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application5-WeYtMp",
+            "secret_string": "",
+            "secret_string_wo": null,
+            "secret_string_wo_version": 1,
+            "version_id": "terraform-20251218170339263700000004",
+            "version_stages": [
+              "AWSCURRENT"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_binary"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string_wo"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "identity": {
+            "account_id": "386827457018",
+            "region": "us-east-2",
+            "secret_id": "arn:aws:secretsmanager:us-east-2:386827457018:secret:application5-WeYtMp",
+            "version_id": "terraform-20251218170339263700000004"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "ephemeral.vault_kv_secret_v2.application5"
+          ]
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}
